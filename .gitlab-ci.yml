@@ -1,0 +1,60 @@
+stages:
+    - build
+    - repo
+
+make_deb:
+    image: schabrolles/ubuntu_ppc64le
+    stage: build
+    only:
+        - build
+    tags:
+        - ppc64le
+        - docker
+    before_script:
+        - mkdir -p /tmp/out/rear
+        - mkdir -p rear
+        - apt update
+        - apt install -y make fakeroot debhelper git
+    script:
+        - make deb
+        - cp ../*.deb rear
+    artifacts:
+        expire_in: 24 hrs
+        paths:
+          - rear
+
+make_rpm:
+    image: schabrolles/fedora_ppc64le
+    stage: build
+    only:
+        - build
+    tags:
+        - ppc64le
+        - docker
+    before_script:
+        - mkdir -p /tmp/out/rear
+        - mkdir -p rear
+        - dnf install -y tar git
+        - dnf groups install -y "RPM Development Tools"
+    script:
+        - make rpm
+        - cp *.rpm rear
+    artifacts:
+        expire_in: 24 hrs
+        paths:
+          - rear
+
+fury_repo:
+    image: ppc64le/ubuntu
+    stage: repo
+    only:
+        - build
+    tags:
+        - ppc64le
+        - docker
+    before_script:
+        - apt update
+        - apt upgrade -y
+        - apt install -y curl
+    script:
+        - for file in rear/*.{deb,rpm} ; do curl -F package=@$file $SCHABROLLES_FURY_REPO ; done
