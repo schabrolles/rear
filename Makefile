@@ -1,4 +1,4 @@
-# In some dists (e.g. Ubuntu) bash is not the default shell. Statements like 
+# In some dists (e.g. Ubuntu) bash is not the default shell. Statements like
 #   cp -a etc/rear/{mappings,templates} ...
 # assumes bash. So its better to set SHELL
 SHELL=/bin/bash
@@ -172,7 +172,7 @@ uninstall:
 #	rm -rv $(DESTDIR)$(localstatedir)/lib/rear/
 
 dist: clean validate man rewrite $(name)-$(distversion).tar.gz restore
-
+git_branch=build
 $(name)-$(distversion).tar.gz:
 	@echo -e "\033[1m== Building archive $(name)-$(distversion) ==\033[0;0m"
 	git checkout $(git_branch)
