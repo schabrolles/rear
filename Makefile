@@ -172,7 +172,8 @@ uninstall:
 #	rm -rv $(DESTDIR)$(localstatedir)/lib/rear/
 
 dist: clean validate man rewrite $(name)-$(distversion).tar.gz restore
-git_branch=build
+
+git_branch = build
 $(name)-$(distversion).tar.gz:
 	@echo -e "\033[1m== Building archive $(name)-$(distversion) ==\033[0;0m"
 	git checkout $(git_branch)
