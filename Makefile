@@ -176,7 +176,7 @@ dist: clean validate man rewrite $(name)-$(distversion).tar.gz restore
 git_branch = build
 $(name)-$(distversion).tar.gz:
 	@echo -e "\033[1m== Building archive $(name)-$(distversion) ==\033[0;0m"
-	# git checkout $(git_branch)
+	git checkout $(git_branch)
 	git ls-tree -r --name-only --full-tree $(git_branch) | \
 		tar -czf $(name)-$(distversion).tar.gz --transform='s,^,$(name)-$(distversion)/,S' --files-from=-
 
