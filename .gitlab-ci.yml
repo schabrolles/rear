@@ -24,7 +24,7 @@ make_deb:
           - rear
 
 make_rpm:
-    image: schabrolles/fedora_ppc64le
+    image: ppc64le/fedora:24
     stage: build
     only:
         - build
