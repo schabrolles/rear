@@ -17,6 +17,6 @@ ansible:
         - git checkout gitlab-ci
         - echo "$VAULT_PASSWD" > personal_vault_pass
     script:
-        - ansible-playbook rear_test.yml --tags=ReaR_Setup
+        - ansible-playbook rear_test.yml -e rear_git_url=http://github.com/rear/rear -e rear_git_branch=master
 
     
