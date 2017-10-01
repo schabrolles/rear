@@ -8,12 +8,7 @@ ansible:
         - rear_test
     tags:
         - ppc64le
-        - docker
     before_script:
-        - yum install --nogpgcheck -y epel-release
-        - yum install --nogpgcheck -y git ansible python2-pip gcc python-devel libxml2-devel.ppc64le
-        - pip install --upgrade pip
-        - pip install ovirt-engine-sdk-python
         - git clone https://gitlab.com/schabrolles/ansible-rear.git
         - cd ansible-rear
         - git checkout gitlab-ci
