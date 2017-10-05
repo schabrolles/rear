@@ -1,10 +1,9 @@
 stages:
     - test
 
-ansible:
-    image: ppc64le/centos
+ReaR_Validation:
     stage: test
-    only: 
+    only:
         - rear_test
     tags:
         - ppc64le
@@ -18,5 +17,3 @@ ansible:
         - echo "$VAULT_PASSWD" > personal_vault_pass
     script:
         - ansible-playbook rear_test.yml -e rear_git_url=http://github.com/rear/rear -e rear_git_branch=master
-
-    
