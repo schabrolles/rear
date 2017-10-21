@@ -1,19 +1,34 @@
-stages:
-    - test
+before_script:
+    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - git clone https://gitlab.com/schabrolles/ansible-rear.git
+    - cd ansible-rear
+    - git checkout gitlab-ci
+    - echo "$VAULT_PASSWD" > personal_vault_pass
 
-ReaR_Validation:
-    stage: test
-    only:
-        - rear_test
+stages:
+    - ReaR_Setup
+    - ReaR_ISO_test
+
+Start_ReaR_master:
+    stage: ReaR_Setup
     tags:
         - ppc64le
-    before_script:
-        - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
-        - eval $(ssh-agent -s)
-        - ssh-add <(echo "$SSH_PRIVATE_KEY")
-        - git clone https://gitlab.com/schabrolles/ansible-rear.git
-        - cd ansible-rear
-        - git checkout gitlab-ci
-        - echo "$VAULT_PASSWD" > personal_vault_pass
     script:
-        - ansible-playbook rear_test.yml -e rear_git_url=http://github.com/rear/rear -e rear_git_branch=master
+        - ansible-playbook rear_start_master.yml
+
+ReaR_setup:
+    stage: ReaR_Setup
+    tags:
+        - ppc64le
+    script:
+        - ansible-playbook rear_setup.yml -e rear_git_url=http://github.com/rear/rear -e rear_git_branch=master
+
+Test_ISO_creation:
+    stage: ReaR_ISO_test
+    tags:
+        - ppc64le
+    script:
+        - ansible-playbook rear_ISO_creation.yml
+
