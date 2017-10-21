@@ -8,51 +8,34 @@ before_script:
     - echo "$VAULT_PASSWD" > personal_vault_pass
 
 stages:
-    - ReaR_Setup
-    - ReaR_ISO_test
-    - ReaR_NETFS_Backup
-    - ReaR_NETFS_Recover
-    - ReaR_NETFS_Check
+    - Setup
+    - ISO_test
+    - NETFS_test
 
 Start_ReaR_master:
-    stage: ReaR_Setup
+    stage: Setup
     tags:
         - ppc64le
     script:
         - ansible-playbook rear_start_master.yml
 
 ReaR_setup:
-    stage: ReaR_Setup
+    stage: Setup
     tags:
         - ppc64le
     script:
         - ansible-playbook rear_setup.yml -e rear_git_url=http://github.com/rear/rear -e rear_git_branch=master
 
 Test_ISO_creation:
-    stage: ReaR_ISO_test
+    stage: ISO_test
     tags:
         - ppc64le
     script:
         - ansible-playbook rear_ISO_creation.yml
 
 NETFS_Backup:
-    stage: ReaR_NETFS_Backup
+    stage: NETFS_test
     tags:
         - ppc64le
     script:
-        - ansible-playbook rear_PXE_Backup.yml
-
-NETFS_Recover:
-    stage: ReaR_NETFS_Recover
-    tags:
-        - ppc64le
-    script:
-        - ansible-playbook rear_PXE_recovery.yml
-
-NETFS_Check:
-    stage: ReaR_NETFS_Check
-    tags:
-        - ppc64le
-    script:
-        - ansible-playbook rear_final_check_and_shutdown.yml
-    when: always
+        - ansible-playbook rear_test.yml --tags=ReaR_Backup,ReaR_recover
