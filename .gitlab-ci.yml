@@ -39,7 +39,7 @@ NETFS_Backup:rhel7BE:
     tags:
         - ppc64le
     script:
-        - ansible-playbook rear_PXE_Backup.yml -l rear-rhelBE-145
+        - ansible-playbook rear_PXE_Backup.yml -l rear-rhelBE-145 -e rear_backup=TSMO
 
 NETFS_Backup:rhel7LE:
     stage: ReaR_NETFS_Backup
@@ -76,7 +76,7 @@ NETFS_Recover:rhel7BE:
     dependencies:
         - NETFS_Backup:rhel7BE
     script:
-        - ansible-playbook rear_PXE_Recovery.yml -l rear-rhelBE-145
+        - ansible-playbook rear_PXE_recovery.ymll -l rear-rhelBE-145
 
 NETFS_Recover:rhel7LE:
     stage: ReaR_NETFS_Recover
@@ -85,7 +85,7 @@ NETFS_Recover:rhel7LE:
     dependencies:
         - NETFS_Backup:rhel7LE
     script:
-        - ansible-playbook rear_PXE_Recovery.yml -l rear-rhel-142
+        - ansible-playbook rear_PXE_recovery.ymll -l rear-rhel-142
 
 NETFS_Recover:sles11:
     stage: ReaR_NETFS_Recover
@@ -94,7 +94,7 @@ NETFS_Recover:sles11:
     dependencies:
         - NETFS_Backup:sles11
     script:
-        - ansible-playbook rear_PXE_Recovery.yml -l rear-sles11-144
+        - ansible-playbook rear_PXE_recovery.ymll -l rear-sles11-144
 
 NETFS_Recover:sles12:
     stage: ReaR_NETFS_Recover
@@ -103,7 +103,7 @@ NETFS_Recover:sles12:
     dependencies:
         - NETFS_Backup:sles12
     script:
-        - ansible-playbook rear_PXE_Recovery.yml -l rear-sles12-143
+        - ansible-playbook rear_PXE_recovery.ymll -l rear-sles12-143
 
 NETFS_Recover:ubuntu1604:
     stage: ReaR_NETFS_Recover
@@ -112,4 +112,4 @@ NETFS_Recover:ubuntu1604:
     dependencies:
         - NETFS_Backup:ubuntu1604
     script:
-        - ansible-playbook rear_PXE_Recovery.yml -l rear-ubuntu-141
+        - ansible-playbook rear_PXE_recovery.ymll -l rear-ubuntu-141
