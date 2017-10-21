@@ -1,3 +1,12 @@
+before_script:
+    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - git clone https://gitlab.com/schabrolles/ansible-rear.git
+    - cd ansible-rear
+    - git checkout gitlab-ci
+    - echo "$VAULT_PASSWD" > personal_vault_pass
+
 stages:
     - ReaR_Setup
     - ReaR_ISO_test
@@ -15,14 +24,6 @@ ReaR_setup:
     stage: ReaR_Setup
     tags:
         - ppc64le
-    before_script:
-        - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
-        - eval $(ssh-agent -s)
-        - ssh-add <(echo "$SSH_PRIVATE_KEY")
-        - git clone https://gitlab.com/schabrolles/ansible-rear.git
-        - cd ansible-rear
-        - git checkout gitlab-ci
-        - echo "$VAULT_PASSWD" > personal_vault_pass
     script:
         - ansible-playbook rear_setup.yml -e rear_git_url=http://github.com/rear/rear -e rear_git_branch=master
 
