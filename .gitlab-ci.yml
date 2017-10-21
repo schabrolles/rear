@@ -9,8 +9,8 @@ before_script:
 
 stages:
     - Setup
-    - ISO_test
-    - NETFS_test
+    - ISO_creation_test
+    - NETFS_recover_test
 
 Start_ReaR_master:
     stage: Setup
@@ -27,14 +27,14 @@ ReaR_setup:
         - ansible-playbook rear_setup.yml -e rear_git_url=http://github.com/rear/rear -e rear_git_branch=master
 
 Test_ISO_creation:
-    stage: ISO_test
+    stage: ISO_creation_test
     tags:
         - ppc64le
     script:
         - ansible-playbook rear_ISO_creation.yml
 
-NETFS_Backup:
-    stage: NETFS_test
+NETFS_test:
+    stage: NETFS_recover_test
     tags:
         - ppc64le
     script:
