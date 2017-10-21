@@ -12,6 +12,7 @@ stages:
     - ReaR_ISO_test
     - ReaR_NETFS_Backup
     - ReaR_NETFS_Recover
+    - ReaR_NETFS_Check
 
 Start_ReaR_master:
     stage: ReaR_Setup
@@ -34,87 +35,24 @@ Test_ISO_creation:
     script:
         - ansible-playbook rear_ISO_creation.yml
 
-NETFS_Backup:rhel7BE:
+NETFS_Backup:
     stage: ReaR_NETFS_Backup
     tags:
         - ppc64le
     script:
-        - ansible-playbook rear_PXE_Backup.yml -l rear-rhelBE-145 -e rear_backup=TSMO
+        - ansible-playbook rear_PXE_Backup.yml
 
-NETFS_Backup:rhel7LE:
-    stage: ReaR_NETFS_Backup
-    tags:
-        - ppc64le
-    script:
-        - ansible-playbook rear_PXE_Backup.yml -l rear-rhel-142
-
-NETFS_Backup:sles11:
-    stage: ReaR_NETFS_Backup
-    tags:
-        - ppc64le
-    script:
-        - ansible-playbook rear_PXE_Backup.yml -l rear-sles11-144
-
-NETFS_Backup:sles12:
-    stage: ReaR_NETFS_Backup
-    tags:
-        - ppc64le
-    script:
-        - ansible-playbook rear_PXE_Backup.yml -l rear-sles12-143
-
-NETFS_Backup:ubuntu1604:
-    stage: ReaR_NETFS_Backup
-    tags:
-        - ppc64le
-    script:
-        - ansible-playbook rear_PXE_Backup.yml -l rear-ubuntu-141
-
-NETFS_Recover:rhel7BE:
+NETFS_Recover:
     stage: ReaR_NETFS_Recover
     tags:
         - ppc64le
-    dependencies:
-        - NETFS_Backup:rhel7BE
     script:
-        - ansible-playbook rear_PXE_recovery.ymll -l rear-rhelBE-145
-    when: always
+        - ansible-playbook rear_PXE_recovery.yml
 
-NETFS_Recover:rhel7LE:
-    stage: ReaR_NETFS_Recover
+NETFS_Check:
+    stage: ReaR_NETFS_Check
     tags:
         - ppc64le
-    dependencies:
-        - NETFS_Backup:rhel7LE
     script:
-        - ansible-playbook rear_PXE_recovery.ymll -l rear-rhel-142
-    when: always
-
-NETFS_Recover:sles11:
-    stage: ReaR_NETFS_Recover
-    tags:
-        - ppc64le
-    dependencies:
-        - NETFS_Backup:sles11
-    script:
-        - ansible-playbook rear_PXE_recovery.ymll -l rear-sles11-144
-    when: always
-
-NETFS_Recover:sles12:
-    stage: ReaR_NETFS_Recover
-    tags:
-        - ppc64le
-    dependencies:
-        - NETFS_Backup:sles12
-    script:
-        - ansible-playbook rear_PXE_recovery.ymll -l rear-sles12-143
-    when: always
-
-NETFS_Recover:ubuntu1604:
-    stage: ReaR_NETFS_Recover
-    tags:
-        - ppc64le
-    dependencies:
-        - NETFS_Backup:ubuntu1604
-    script:
-        - ansible-playbook rear_PXE_recovery.ymll -l rear-ubuntu-141
+        - ansible-playbook rear_final_check_and_shutdown.yml
     when: always
