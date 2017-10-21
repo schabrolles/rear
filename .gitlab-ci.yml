@@ -11,6 +11,7 @@ stages:
     - Setup
     - ISO_creation_test
     - NETFS_recover_test
+    - TSM_recover_test
 
 Start_ReaR_master:
     stage: Setup
@@ -39,3 +40,10 @@ NETFS_test:
         - ppc64le
     script:
         - ansible-playbook rear_test.yml --tags=ReaR_Backup,ReaR_recover
+
+TSM_test:
+    stage: TSM_recover_test
+    tags:
+        - ppc64le
+    script:
+        - ansible-playbook rear_test.yml -l rear-sles12-143 -e rear_backup=TSM --tags=ReaR_Backup,ReaR_recover
