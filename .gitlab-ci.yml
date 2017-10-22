@@ -46,4 +46,4 @@ TSM_test:
     tags:
         - ppc64le
     script:
-        - ansible-playbook rear_test.yml -l ReaR_TSM_client -e rear_backup=TSM --tags=ReaR_Backup,ReaR_recover
+        - ansible-playbook rear_test.yml -l ReaR_TSM_client --tags=ReaR_Backup,ReaR_recover
