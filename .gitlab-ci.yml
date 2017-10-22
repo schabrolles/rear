@@ -25,7 +25,7 @@ ReaR_setup:
     tags:
         - ppc64le
     script:
-        - ansible-playbook rear_setup.yml -e rear_git_url=http://github.com/rear/rear -e rear_git_branch=master
+        - ansible-playbook rear_setup.yml -e rear_git_url=http://github.com/schabrolles/rear -e rear_git_branch=TSM_ask_password
 
 Test_ISO_creation:
     stage: ISO_creation_test
